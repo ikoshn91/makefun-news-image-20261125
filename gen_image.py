@@ -325,7 +325,9 @@ def main():
         d.text((x + PANEL_W - 10, y + 11), f"{len(stories)} STORIES",
                font=F_PANEL_COUNT, fill=MUTED, anchor="ra")
         d.line([x + 10, y + 30, x + PANEL_W - 10, y + 30], fill="#d8d2c0", width=1)
-        # measure story blocks, then spread them evenly in the area
+        # measure story blocks, then spread them evenly across the full
+        # panel height: full gaps between stories, a half-gap at top and
+        # bottom, so the last story sits near the panel's bottom edge
         p_inner = PANEL_W - 20
         blocks = []
         for head, body in stories:
@@ -336,8 +338,8 @@ def main():
         area_h = PANEL_ROW_H - 36 - 6
         content_h = sum(b[2] for b in blocks)
         n = len(blocks)
-        gap = (area_h - content_h) / (n + 1)
-        cy = area_top + gap
+        gap = (area_h - content_h) / n
+        cy = area_top + gap / 2
         for hl, bl, bh in blocks:
             d.ellipse([x + 10, cy + 4, x + 14, cy + 8], fill=color)
             ty = cy
